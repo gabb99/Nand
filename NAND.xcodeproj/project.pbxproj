@@ -109,6 +109,10 @@
 		82AA07FA21CC70950071EF7D /* gmock.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gmock.cc; path = gtest/googlemock/src/gmock.cc; sourceTree = SOURCE_ROOT; };
 		82AA07FB21CC70950071EF7D /* gmock_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gmock_main.cc; path = gtest/googlemock/src/gmock_main.cc; sourceTree = SOURCE_ROOT; };
 		82AA07FC21CC70950071EF7D /* gmock-cardinalities.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gmock-cardinalities.cc"; path = "gtest/googlemock/src/gmock-cardinalities.cc"; sourceTree = SOURCE_ROOT; };
+		82D825AB21CC720000695606 /* wire.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = wire.hpp; sourceTree = "<group>"; };
+		82D825AC21CC721100695606 /* nand.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = nand.hpp; sourceTree = "<group>"; };
+		82D825AD21CC722500695606 /* clock.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = clock.hpp; sourceTree = "<group>"; };
+		82D825AE21CC72D000695606 /* dgate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dgate.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,10 @@
 			children = (
 				82AA07A421CC70390071EF7D /* gTest */,
 				82AA07A221CC6E910071EF7D /* main.cpp */,
+				82D825AB21CC720000695606 /* wire.hpp */,
+				82D825AD21CC722500695606 /* clock.hpp */,
+				82D825AC21CC721100695606 /* nand.hpp */,
+				82D825AE21CC72D000695606 /* dgate.hpp */,
 				8239193F21CC6C5F009A626E /* Products */,
 			);
 			sourceTree = "<group>";
