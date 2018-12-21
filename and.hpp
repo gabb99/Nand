@@ -20,6 +20,7 @@ class and_t
 public:
 	and_t()
 	{
+		m_nand.attach([&](bool value) { m_not.in(value); } );
 	}
 	
 	unsigned inputs() const { return N; }
@@ -27,6 +28,11 @@ public:
 	void attach(const std::function<void(bool)>& cb)
 	{
 		m_not.attach(cb);
+	}
+	
+	void in(const std::initializer_list<bool>& in)
+	{
+		m_nand.in(in);
 	}
 	
 	void in(bool value, unsigned in)

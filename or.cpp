@@ -13,19 +13,19 @@
 
 TEST(basic, or)
 {
-	nand_t<> nand;
+	or_t<> or_;
 	
-	nand.in(false, 0);
-	nand.in(false, 1);
-	EXPECT_FALSE(nand.out());
+	or_.in(false, 0);
+	or_.in(false, 1);
+	EXPECT_FALSE(or_.out());
 	
-	nand.in({true, false});
-	EXPECT_TRUE(nand.out());
+	or_.in({true, false});
+	EXPECT_TRUE(or_.out());
 	
-	nand.in(false, 0);
-	nand.in(true, 1);
-	EXPECT_TRUE(nand.out());
+	or_.in(false, 0);
+	or_.in(true, 1);
+	EXPECT_TRUE(or_.out());
 	
-	nand.in({true, true});
-	EXPECT_TRUE(nand.out());
+	or_.in({true, true});
+	EXPECT_TRUE(or_.out());
 }

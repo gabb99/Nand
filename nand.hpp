@@ -39,6 +39,7 @@ public:
 
 	void in(bool value, unsigned in)
 	{
+		assert(in < m_inputs.size());
 		m_inputs[in] = value;
 		m_output.in(out());
 	}
