@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		823F1C9421CC9680000A4271 /* not.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823F1C9321CC9680000A4271 /* not.cpp */; };
+		823F1C9721CC9853000A4271 /* and.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823F1C9521CC9853000A4271 /* and.cpp */; };
+		823F1C9A21CC9863000A4271 /* or.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823F1C9821CC9863000A4271 /* or.cpp */; };
 		82AA07A321CC6E910071EF7D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AA07A221CC6E910071EF7D /* main.cpp */; };
 		82AA07CF21CC705B0071EF7D /* gtest-test-part.cc in Sources */ = {isa = PBXBuildFile; fileRef = 82AA07C421CC705B0071EF7D /* gtest-test-part.cc */; };
 		82AA07D021CC705B0071EF7D /* gtest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 82AA07C521CC705B0071EF7D /* gtest.cc */; };
@@ -37,6 +40,12 @@
 
 /* Begin PBXFileReference section */
 		8239193E21CC6C5F009A626E /* NAND */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NAND; sourceTree = BUILT_PRODUCTS_DIR; };
+		823F1C9221CC964A000A4271 /* not.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = not.hpp; sourceTree = "<group>"; };
+		823F1C9321CC9680000A4271 /* not.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = not.cpp; sourceTree = "<group>"; };
+		823F1C9521CC9853000A4271 /* and.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = and.cpp; sourceTree = "<group>"; };
+		823F1C9621CC9853000A4271 /* and.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = and.hpp; sourceTree = "<group>"; };
+		823F1C9821CC9863000A4271 /* or.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = or.cpp; sourceTree = "<group>"; };
+		823F1C9921CC9863000A4271 /* or.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = or.hpp; sourceTree = "<group>"; };
 		82AA07A221CC6E910071EF7D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		82AA07A621CC704C0071EF7D /* gtest-matchers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gtest-matchers.h"; sourceTree = "<group>"; };
 		82AA07A721CC704C0071EF7D /* gtest-death-test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gtest-death-test.h"; sourceTree = "<group>"; };
@@ -133,6 +142,12 @@
 				82AA07A221CC6E910071EF7D /* main.cpp */,
 				82D825AB21CC720000695606 /* wire.hpp */,
 				82D825AD21CC722500695606 /* clock.hpp */,
+				823F1C9321CC9680000A4271 /* not.cpp */,
+				823F1C9221CC964A000A4271 /* not.hpp */,
+				823F1C9821CC9863000A4271 /* or.cpp */,
+				823F1C9921CC9863000A4271 /* or.hpp */,
+				823F1C9521CC9853000A4271 /* and.cpp */,
+				823F1C9621CC9853000A4271 /* and.hpp */,
 				82D825AC21CC721100695606 /* nand.hpp */,
 				82D825AE21CC72D000695606 /* dgate.hpp */,
 				8239193F21CC6C5F009A626E /* Products */,
@@ -351,7 +366,10 @@
 				82AA07D021CC705B0071EF7D /* gtest.cc in Sources */,
 				82AA07D521CC705B0071EF7D /* gtest-typed-test.cc in Sources */,
 				82AA07FD21CC70950071EF7D /* gmock-internal-utils.cc in Sources */,
+				823F1C9A21CC9863000A4271 /* or.cpp in Sources */,
+				823F1C9721CC9853000A4271 /* and.cpp in Sources */,
 				82AA07D221CC705B0071EF7D /* gtest-death-test.cc in Sources */,
+				823F1C9421CC9680000A4271 /* not.cpp in Sources */,
 				82AA07D721CC705B0071EF7D /* gtest-filepath.cc in Sources */,
 				82AA080121CC70950071EF7D /* gmock.cc in Sources */,
 			);

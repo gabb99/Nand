@@ -17,11 +17,6 @@ class nand_t
 	std::array<bool, N> m_inputs;
 	wire_t<1> m_output;
 
-	void signal()
-	{
-		m_output.in(out());
-	}
-
 public:
 	nand_t() {}
 	
@@ -39,13 +34,13 @@ public:
 		for (unsigned i = 0; i < in.size(); i++)
 			m_inputs[i] = in.begin()[i];
 
-		signal();
+		m_output.in(out());
 	}
 
 	void in(bool value, unsigned in)
 	{
 		m_inputs[in] = value;
-		signal();
+		m_output.in(out());
 	}
 	
 	bool out() const
