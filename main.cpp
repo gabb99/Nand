@@ -9,9 +9,30 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
+#include "wire.hpp"
 #include "clock.hpp"
 #include "nand.hpp"
 #include "dgate.hpp"
+
+namespace
+{
+	class Callback
+	{
+	public:
+		Callback() {}
+		virtual ~Callback() {}
+
+		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
+		virtual void out(bool) {}
+	};
+
+	class MockCallback : public Callback
+	{
+	public:
+		MOCK_METHOD1(out, void(bool));
+	};
+}
+
 
 int main(int argc, const char * argv[])
 {
@@ -22,10 +43,49 @@ int main(int argc, const char * argv[])
 
 TEST(basic, wire)
 {
+	MockCallback cb;
+	wire_t<> wire;
+	wire.attach(cb.cb());
+	
+	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(wire.size()));
+	wire.in(true);
 }
+
+TEST(basic, wire_n)
+{
+	MockCallback cb;
+	wire_t<4> wire;
+
+	for (auto i = 0; i < wire.size(); i++)
+		wire.attach(cb.cb(), i);
+	
+	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(wire.size()));
+	wire.in(true);
+}
+
 
 TEST(basic, nand)
 {
+	MockCallback cb;
+	nand_t<> nand;
+	nand.attach(cb.cb());
+
+	EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(3));
+	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(1));
+
+	nand.in(false, 0);
+	nand.in(false, 1);
+	EXPECT_TRUE(nand.out());
+
+	nand.in({true, false});
+	EXPECT_TRUE(nand.out());
+
+	nand.in(false, 0);
+	nand.in(true, 1);
+	EXPECT_TRUE(nand.out());
+
+	nand.in({true, true});
+	EXPECT_FALSE(nand.out());
 }
 
 TEST(basic, clock)
