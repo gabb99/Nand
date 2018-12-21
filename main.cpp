@@ -6,10 +6,11 @@
 //  Copyright © 2018 Gabriel Beauchemin. All rights reserved.
 //
 
-#include <iostream>
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
-int main(int argc, const char * argv[]) {
-	// insert code here...
-	std::cout << "Hello, World!\n";
-	return 0;
+int main(int argc, const char * argv[])
+{
+	testing::InitGoogleMock(&argc, const_cast<char**>(argv));
+	return RUN_ALL_TESTS();
 }
