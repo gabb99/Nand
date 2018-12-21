@@ -47,8 +47,11 @@ TEST(basic, wire)
 	wire_t<> wire;
 	wire.attach(cb.cb());
 	
-	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(wire.size()));
+	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(1));
 	wire.in(true);
+
+	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(1));
+	wire.in(false);
 }
 
 TEST(basic, wire_n)
@@ -61,6 +64,9 @@ TEST(basic, wire_n)
 	
 	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(wire.size()));
 	wire.in(true);
+
+	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(wire.size()));
+	wire.in(false);
 }
 
 
