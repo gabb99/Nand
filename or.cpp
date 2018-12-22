@@ -42,7 +42,7 @@ namespace
 			or_.attach(cb.cb());
 			
 			EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(N));
-			EXPECT_CALL(cb, out(false)).Times(testing::Exactly(1));
+			EXPECT_CALL(cb, out(false)).Times(testing::AtLeast(N));
 			
 			or_.in(b); // Test all zeros
 			EXPECT_FALSE(or_.out());
