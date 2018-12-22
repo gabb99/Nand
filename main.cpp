@@ -86,13 +86,40 @@ TEST(basic, nand)
 	nand.in({true, false});
 	EXPECT_TRUE(nand.out());
 
-	nand.in(false, 0);
-	nand.in(true, 1);
+	nand.in(std::bitset<2>("10"));
 	EXPECT_TRUE(nand.out());
 
 	nand.in({true, true});
 	EXPECT_FALSE(nand.out());
 }
+
+TEST(basic, nand_n)
+{
+	constexpr auto n = 16;
+
+	MockCallback cb;
+	nand_t<n> nand;
+	nand.attach(cb.cb());
+	
+	EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(n));
+	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(1));
+	
+	std::bitset<n> b;
+	nand.in(b); // Test all zeros
+	EXPECT_TRUE(nand.out());
+
+	for (auto i = 0; i < n; i++)
+	{
+		nand.in(true, i);
+		EXPECT_TRUE(nand.out());
+		nand.in(false, i);
+	}
+
+	b.flip();
+	nand.in(b); // Test all ones
+	EXPECT_FALSE(nand.out());
+}
+
 
 TEST(basic, clock)
 {

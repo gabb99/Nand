@@ -15,6 +15,7 @@
 template <unsigned N = 1>
 class wire_t
 {
+	// one input, N fanout
 	std::array<std::function<void(bool)>, N> m_wires;
 
 	void out(bool value)

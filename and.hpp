@@ -29,7 +29,12 @@ public:
 	{
 		m_not.attach(cb);
 	}
-	
+
+	void in(const std::bitset<N>& b)
+	{
+		m_nand.in(b);
+	}
+
 	void in(const std::initializer_list<bool>& in)
 	{
 		m_nand.in(in);

@@ -35,6 +35,12 @@ public:
 		m_nand.attach(cb);
 	}
 	
+	void in(const std::bitset<N>& b)
+	{
+		for (unsigned i = 0; i < N; i++)
+			m_not[i].in(b.test(i));
+	}
+	
 	void in(const std::initializer_list<bool>& in)
 	{
 		assert(in.size() == N);

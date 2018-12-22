@@ -9,6 +9,8 @@
 #ifndef nand_h
 #define nand_h
 
+#include <bitset>
+
 #include "wire.hpp"
 
 template <unsigned N = 2>
@@ -27,6 +29,14 @@ public:
 		m_output.attach(cb);
 	}
 
+	void in(const std::bitset<N>& b)
+	{
+		for (unsigned i = 0; i < N; i++)
+			m_inputs[i] = b.test(i);
+		
+		m_output.in(out());
+	}
+	
 	void in(const std::initializer_list<bool>& in)
 	{
 		assert(in.size() == N);
