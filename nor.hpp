@@ -9,6 +9,47 @@
 #ifndef nor_hpp
 #define nor_hpp
 
-#include <stdio.h>
+#include "not.hpp"
+#include "or.hpp"
+
+template <unsigned N = 2>
+class nor_t
+{
+	or_t<N>	m_or;
+	not_t m_not;
+	
+public:
+	nor_t()
+	{
+		m_or.attach([&](bool value) { m_not.in(value); } );
+	}
+	
+	unsigned inputs() const { return N; }
+	
+	void attach(const std::function<void(bool)>& cb)
+	{
+		m_not.attach(cb);
+	}
+	
+	void in(const std::bitset<N>& b)
+	{
+		m_or.in(b);
+	}
+	
+	void in(const std::initializer_list<bool>& in)
+	{
+		m_or.in(in);
+	}
+	
+	void in(bool value, unsigned in)
+	{
+		m_or.in(value, in);
+	}
+	
+	bool out() const
+	{
+		return m_not.out();
+	}
+};
 
 #endif /* nor_hpp */
