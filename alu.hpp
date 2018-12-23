@@ -1,0 +1,14 @@
+//
+//  alu.hpp
+//  NAND
+//
+//  Created by Gabriel Beauchemin on 2018-12-23.
+//  Copyright © 2018 Gabriel Beauchemin. All rights reserved.
+//
+
+#ifndef alu_hpp
+#define alu_hpp
+
+#include <stdio.h>
+
+#endif /* alu_hpp */
