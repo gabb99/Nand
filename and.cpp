@@ -52,6 +52,7 @@ namespace
 				and_.in(true, i);
 				EXPECT_FALSE(and_.out());
 				and_.in(false, i);
+				EXPECT_FALSE(and_.out());
 			}
 			
 			b.flip();

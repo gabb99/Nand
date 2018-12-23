@@ -20,7 +20,7 @@ class nand_t
 	wire_t<1> m_output;
 
 public:
-	nand_t() {}
+	nand_t() { m_inputs.fill(false); }
 	
 	unsigned inputs() const { return N; }
 

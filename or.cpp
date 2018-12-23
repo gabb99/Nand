@@ -52,6 +52,7 @@ namespace
 				or_.in(true, i);
 				EXPECT_TRUE(or_.out());
 				or_.in(false, i);
+				EXPECT_FALSE(or_.out());
 			}
 			
 			b.flip();

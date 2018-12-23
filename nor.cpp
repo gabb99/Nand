@@ -52,6 +52,7 @@ namespace
 				nor_.in(true, i);
 				EXPECT_FALSE(nor_.out());
 				nor_.in(false, i);
+				EXPECT_TRUE(nor_.out());
 			}
 			
 			b.flip();
