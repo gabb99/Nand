@@ -9,6 +9,6 @@
 #ifndef adder_hpp
 #define adder_hpp
 
-#include <stdio.h>
+#include "nand.hpp"
 
 #endif /* adder_hpp */

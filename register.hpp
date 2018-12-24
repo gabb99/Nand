@@ -9,6 +9,7 @@
 #ifndef register_hpp
 #define register_hpp
 
-#include <stdio.h>
+#include "dgate.hpp"
+#include "enabler.hpp"
 
 #endif /* register_hpp */

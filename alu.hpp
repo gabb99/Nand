@@ -9,6 +9,6 @@
 #ifndef alu_hpp
 #define alu_hpp
 
-#include <stdio.h>
+#include "shift_register.hpp"
 
 #endif /* alu_hpp */

@@ -9,6 +9,6 @@
 #ifndef ram_hpp
 #define ram_hpp
 
-#include <stdio.h>
+#include "decoder.hpp"
 
 #endif /* ram_hpp */

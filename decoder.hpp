@@ -9,6 +9,6 @@
 #ifndef decoder_hpp
 #define decoder_hpp
 
-#include <stdio.h>
+#include "nand.hpp"
 
 #endif /* decoder_hpp */

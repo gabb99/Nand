@@ -9,6 +9,6 @@
 #ifndef enabler_hpp
 #define enabler_hpp
 
-#include <stdio.h>
+#include "nand.hpp"
 
 #endif /* enabler_hpp */

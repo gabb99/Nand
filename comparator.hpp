@@ -9,6 +9,6 @@
 #ifndef comparator_hpp
 #define comparator_hpp
 
-#include <stdio.h>
+#include "nand.hpp"
 
 #endif /* comparator_hpp */

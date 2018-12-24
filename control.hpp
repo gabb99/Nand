@@ -9,6 +9,6 @@
 #ifndef control_hpp
 #define control_hpp
 
-#include <stdio.h>
+#include "stepper.hpp"
 
 #endif /* control_hpp */

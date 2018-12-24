@@ -9,6 +9,6 @@
 #ifndef shift_register_hpp
 #define shift_register_hpp
 
-#include <stdio.h>
+#include "register.hpp"
 
 #endif /* shift_register_hpp */
