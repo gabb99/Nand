@@ -71,7 +71,3 @@ TEST(basic, wire_n)
 TEST(basic, clock)
 {
 }
-
-TEST(basic, dgate)
-{
-}
