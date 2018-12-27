@@ -44,11 +44,10 @@ public:
 			m_ands[i].in(in.begin()[i], 0);
 	}
 	
-	void in(bool value, unsigned in)
+	void in(bool value, unsigned n)
 	{
-		assert(in < m_ands.size());
-		m_ands[in].in(value, 0);
-
+		assert(n < m_ands.size());
+		m_ands[n].in(value, 0);
 	}
 	
 	std::bitset<N> out() const

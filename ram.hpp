@@ -10,5 +10,16 @@
 #define ram_hpp
 
 #include "decoder.hpp"
+#include "register.hpp"
+#include "decoder.hpp"
+
+template <unsigned N = 2>
+class ram_t
+{
+	registr_t<N> m_memory_adress_register;
+
+public:
+	ram_t() {}
+};
 
 #endif /* ram_hpp */

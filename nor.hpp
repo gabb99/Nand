@@ -39,9 +39,9 @@ public:
 		m_or.in(in);
 	}
 	
-	void in(bool value, unsigned in)
+	void in(bool value, unsigned n)
 	{
-		m_or.in(value, in);
+		m_or.in(value, n);
 	}
 	
 	bool out() const

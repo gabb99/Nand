@@ -97,7 +97,6 @@ TEST(basic, enabler)
 	enabler_t<> enabler;
 	enabler.attach(cb.cb());
 	
-	// set does not trigger out()
 	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(1));
 	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(2));
 

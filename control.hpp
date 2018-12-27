@@ -11,4 +11,11 @@
 
 #include "stepper.hpp"
 
+template <unsigned N = 8>
+class control_t
+{
+public:
+	control_t() {}
+};
+
 #endif /* control_hpp */

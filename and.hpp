@@ -38,9 +38,9 @@ public:
 		m_nand.in(in);
 	}
 	
-	void in(bool value, unsigned in)
+	void in(bool value, unsigned n)
 	{
-		m_nand.in(value, in);
+		m_nand.in(value, n);
 	}
 	
 	bool out() const

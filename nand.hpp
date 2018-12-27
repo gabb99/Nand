@@ -45,10 +45,10 @@ public:
 		m_output.in(out());
 	}
 
-	void in(bool value, unsigned in)
+	void in(bool value, unsigned n)
 	{
-		assert(in < m_inputs.size());
-		m_inputs[in] = value;
+		assert(n < m_inputs.size());
+		m_inputs[n] = value;
 		m_output.in(out());
 	}
 	

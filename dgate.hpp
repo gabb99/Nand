@@ -37,7 +37,12 @@ public:
 	{
 		m_set = value;
 		if (value)
+		{
 			m_gated_inputs = m_inputs;
+
+			for (unsigned i = 0; i < N; i++)
+				m_output.in(out(i));
+		}
 	}
 
 	void in(const std::bitset<N>& b)
@@ -62,12 +67,12 @@ public:
 		}
 	}
 	
-	void in(bool value, unsigned in)
+	void in(bool value, unsigned n)
 	{
-		assert(in < m_inputs.size());
-		m_inputs[in] = value;
-		if (m_set) m_gated_inputs[in] = m_inputs[in];
-		m_output.in(out(in));
+		assert(n < m_inputs.size());
+		m_inputs[n] = value;
+		if (m_set) m_gated_inputs[n] = m_inputs[n];
+		m_output.in(out(n));
 	}
 
 	std::bitset<N> out() const
@@ -80,12 +85,12 @@ public:
 		return n;
 	}
 
-	bool out(unsigned w) const
+	bool out(unsigned n) const
 	{
 		if (m_set == false)
-			return m_gated_inputs[w];
+			return m_gated_inputs[n];
 
-		return m_inputs[w];
+		return m_inputs[n];
 	}
 };
 

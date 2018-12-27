@@ -12,4 +12,11 @@
 #include "shift_register.hpp"
 #include "adder.hpp"
 
+template <unsigned N = 8>
+class alu_t
+{
+public:
+	alu_t() {}
+};
+
 #endif /* alu_hpp */

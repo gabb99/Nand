@@ -10,6 +10,7 @@
 		823F1C9421CC9680000A4271 /* not.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823F1C9321CC9680000A4271 /* not.cpp */; };
 		823F1C9721CC9853000A4271 /* and.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823F1C9521CC9853000A4271 /* and.cpp */; };
 		823F1C9A21CC9863000A4271 /* or.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823F1C9821CC9863000A4271 /* or.cpp */; };
+		8262CDA721D523E800698538 /* cpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8262CDA521D523E800698538 /* cpu.cpp */; };
 		8278C5BD21CFE5280066733B /* enabler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8278C5BB21CFE5280066733B /* enabler.cpp */; };
 		8278C5C021CFE53D0066733B /* register.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8278C5BE21CFE53D0066733B /* register.cpp */; };
 		8278C5C321CFE5720066733B /* decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8278C5C121CFE5720066733B /* decoder.cpp */; };
@@ -61,6 +62,8 @@
 		823F1C9621CC9853000A4271 /* and.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = and.hpp; sourceTree = "<group>"; };
 		823F1C9821CC9863000A4271 /* or.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = or.cpp; sourceTree = "<group>"; };
 		823F1C9921CC9863000A4271 /* or.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = or.hpp; sourceTree = "<group>"; };
+		8262CDA521D523E800698538 /* cpu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpu.cpp; sourceTree = "<group>"; };
+		8262CDA621D523E800698538 /* cpu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cpu.hpp; sourceTree = "<group>"; };
 		8278C5BB21CFE5280066733B /* enabler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = enabler.cpp; sourceTree = "<group>"; };
 		8278C5BC21CFE5280066733B /* enabler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = enabler.hpp; sourceTree = "<group>"; };
 		8278C5BE21CFE53D0066733B /* register.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = register.cpp; sourceTree = "<group>"; };
@@ -181,7 +184,9 @@
 		8239193521CC6C5F009A626E = {
 			isa = PBXGroup;
 			children = (
-				8278C5C721CFE5DF0066733B /* cpu */,
+				8262CDA521D523E800698538 /* cpu.cpp */,
+				8262CDA621D523E800698538 /* cpu.hpp */,
+				8278C5C721CFE5DF0066733B /* cpu blocks */,
 				82AA07A221CC6E910071EF7D /* main.cpp */,
 				82AA07A421CC70390071EF7D /* gTest */,
 				82D825AB21CC720000695606 /* wire.hpp */,
@@ -215,8 +220,6 @@
 				8278C5C221CFE5720066733B /* decoder.hpp */,
 				8278C5BE21CFE53D0066733B /* register.cpp */,
 				8278C5BF21CFE53D0066733B /* register.hpp */,
-				8278C5C421CFE5B70066733B /* ram.cpp */,
-				8278C5C521CFE5B70066733B /* ram.hpp */,
 				8278C5CE21CFE63E0066733B /* shift_register.cpp */,
 				8278C5CF21CFE63E0066733B /* shift_register.hpp */,
 				8278C5D121CFE6700066733B /* adder.cpp */,
@@ -229,15 +232,17 @@
 			name = "complex gates";
 			sourceTree = "<group>";
 		};
-		8278C5C721CFE5DF0066733B /* cpu */ = {
+		8278C5C721CFE5DF0066733B /* cpu blocks */ = {
 			isa = PBXGroup;
 			children = (
 				8278C5C821CFE5F80066733B /* alu.cpp */,
 				8278C5C921CFE5F80066733B /* alu.hpp */,
 				8278C5CB21CFE6080066733B /* control.cpp */,
 				8278C5CC21CFE6080066733B /* control.hpp */,
+				8278C5C421CFE5B70066733B /* ram.cpp */,
+				8278C5C521CFE5B70066733B /* ram.hpp */,
 			);
-			name = cpu;
+			name = "cpu blocks";
 			sourceTree = "<group>";
 		};
 		827C746F21CE8E9F003D9F0B /* basic gates */ = {
@@ -453,6 +458,7 @@
 				82AA080321CC70950071EF7D /* gmock-cardinalities.cc in Sources */,
 				8278C5D021CFE63E0066733B /* shift_register.cpp in Sources */,
 				8278C5C021CFE53D0066733B /* register.cpp in Sources */,
+				8262CDA721D523E800698538 /* cpu.cpp in Sources */,
 				8278C5D621CFE68A0066733B /* comparator.cpp in Sources */,
 				8278C5C321CFE5720066733B /* decoder.cpp in Sources */,
 				82AA07D421CC705B0071EF7D /* gtest-printers.cc in Sources */,
@@ -494,7 +500,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -516,6 +522,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -553,7 +560,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -575,6 +582,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;

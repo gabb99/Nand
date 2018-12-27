@@ -47,10 +47,10 @@ public:
 			m_not[i].in(in.begin()[i]);
 	}
 	
-	void in(bool value, unsigned in)
+	void in(bool value, unsigned n)
 	{
-		assert(in < m_not.size());
-		m_not[in].in(value);
+		assert(n < m_not.size());
+		m_not[n].in(value);
 	}
 	
 	bool out() const
