@@ -24,8 +24,6 @@ public:
 		m_nxor.attach([&](bool value) { m_not.in(value); } );
 	}
 	
-	unsigned inputs() const { return N; }
-	
 	void attach(const std::function<void(bool)>& cb)
 	{
 		m_not.attach(cb);

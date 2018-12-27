@@ -28,8 +28,6 @@ class dgate_t
 public:
 	dgate_t() { m_inputs.fill(false); m_gated_inputs.fill(false); }
 	
-	unsigned inputs() const { return N; }
-	
 	void attach(const std::function<void(bool)>& cb, unsigned w = 0)
 	{
 		m_output.attach(cb, w);

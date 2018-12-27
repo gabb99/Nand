@@ -10,5 +10,6 @@
 #define alu_hpp
 
 #include "shift_register.hpp"
+#include "adder.hpp"
 
 #endif /* alu_hpp */

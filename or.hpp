@@ -28,8 +28,6 @@ public:
 		}
 	}
 	
-	unsigned inputs() const { return N; }
-	
 	void attach(const std::function<void(bool)>& cb)
 	{
 		m_nand.attach(cb);

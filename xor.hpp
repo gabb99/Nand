@@ -9,11 +9,9 @@
 #ifndef xor_hpp
 #define xor_hpp
 
-#include "nand.hpp"
-
 #include <bitset>
 
-#include "wire.hpp"
+#include "nand.hpp"
 
 template <unsigned N = 2>
 class xor_t
@@ -31,8 +29,6 @@ class xor_t
 	
 public:
 	xor_t() { m_inputs.fill(false); }
-	
-	unsigned inputs() const { return N; }
 	
 	void attach(const std::function<void(bool)>& cb)
 	{

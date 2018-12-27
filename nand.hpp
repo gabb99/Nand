@@ -22,8 +22,6 @@ class nand_t
 public:
 	nand_t() { m_inputs.fill(false); }
 	
-	unsigned inputs() const { return N; }
-
 	void attach(const std::function<void(bool)>& cb)
 	{
 		m_output.attach(cb);
