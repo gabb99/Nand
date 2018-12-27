@@ -77,6 +77,9 @@ namespace
 			dgate.in(b); // Test all zeros
 			EXPECT_NE(dgate.out(), b);
 
+			// Restore to the set values
+			b.flip();
+
 			for (auto i = 0; i < cnt(); i++)
 			{
 				// Skip over same bit sequences
