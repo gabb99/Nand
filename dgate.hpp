@@ -41,7 +41,7 @@ public:
 			m_gated_inputs = m_inputs;
 
 			for (unsigned i = 0; i < N; i++)
-				m_output.in(out(i));
+				m_output.in(out(i), i);
 		}
 	}
 
@@ -51,7 +51,7 @@ public:
 		{
 			m_inputs[i] = b.test(i);
 			if (m_set) m_gated_inputs[i] = m_inputs[i];
-			m_output.in(out(i));
+			m_output.in(out(i), i);
 		}
 	}
 	
@@ -63,7 +63,7 @@ public:
 		{
 			m_inputs[i] = in.begin()[i];
 			if (m_set) m_gated_inputs[i] = m_inputs[i];
-			m_output.in(out());
+			m_output.in(out(), i);
 		}
 	}
 	
@@ -72,7 +72,7 @@ public:
 		assert(n < m_inputs.size());
 		m_inputs[n] = value;
 		if (m_set) m_gated_inputs[n] = m_inputs[n];
-		m_output.in(out(n));
+		m_output.in(out(n), n);
 	}
 
 	std::bitset<N> out() const

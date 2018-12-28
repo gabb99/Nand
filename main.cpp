@@ -60,11 +60,13 @@ TEST(basic, wire_n)
 	for (auto i = 0; i < wire.size(); i++)
 		wire.attach(cb.cb(), i);
 	
-	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(wire.size()));
-	wire.in(true);
+	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(2));
+	wire.in(true, 0);
+	wire.in(true, 2);
 
-	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(wire.size()));
-	wire.in(false);
+	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(2));
+	wire.in(false, 1);
+	wire.in(false, 3);
 }
 
 

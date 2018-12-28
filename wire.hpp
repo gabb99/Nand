@@ -10,19 +10,19 @@
 #define wire_h
 
 #include <functional>
+#include <vector>
 #include <array>
 
 template <unsigned N = 1>
 class wire_t
 {
-	// one input, N fanout
-	std::array<std::function<void(bool)>, N> m_wires;
+	// N input, X fanout
+	std::array<std::vector<std::function<void(bool)>>, N> m_wires;
 
-	void out(bool value)
+	void out(bool value, unsigned w)
 	{
-		for (auto&& w : m_wires)
-			if (w)
-				w(value);
+		for (auto&& w : m_wires[w])
+			w(value);
 	}
 
 public:
@@ -32,7 +32,7 @@ public:
 
 	void attach(const std::function<void(bool)>& cb, unsigned w = 0)
 	{
-		m_wires[w] = cb;
+		m_wires[w].push_back(cb);
 	}
 
 	void attach(const wire_t<N>& w)
@@ -40,9 +40,9 @@ public:
 		m_wires = w.m_wires;
 	}
 
-	void in(bool value)
+	void in(bool value, unsigned w = 0)
 	{
-		out(value);
+		out(value, w);
 	}
 };
 

@@ -23,7 +23,7 @@ public:
 	{
 		for (unsigned i = 0; i < N; i++)
 		{
-			m_byte.attach([&, i](bool value){ m_enabler.in(value, i); }, i);
+			m_byte.attach([&, i](bool value) { m_enabler.in(value, i); }, i);
 		}
 	}
 	
