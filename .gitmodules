@@ -7,3 +7,6 @@
 [submodule "mos6502"]
 	path = mos6502
 	url = https://github.com/gianlucag/mos6502.git
+[submodule "nand2tetris"]
+	path = nand2tetris
+	url = https://github.com/peferron/nand2tetris.git
