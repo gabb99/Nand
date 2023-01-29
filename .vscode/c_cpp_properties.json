@@ -3,7 +3,8 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/out/build/debug/vcpkg_installed/arm64-osx/include"
             ],
             "defines": [],
             "macFrameworkPath": [
