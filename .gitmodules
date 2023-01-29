@@ -4,3 +4,6 @@
 [submodule "nand2tetris"]
 	path = nand2tetris
 	url = https://github.com/peferron/nand2tetris.git
+[submodule "vcpkg"]
+	path = vcpkg
+	url = https://github.com/microsoft/vcpkg

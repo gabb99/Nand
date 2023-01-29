@@ -15,10 +15,12 @@ project(
   VERSION 1.0
   LANGUAGES CXX)
 
-set_property(TARGET Nand PROPERTY CXX_STANDARD 17)
-
-# If you set any CMAKE_ variables, that can go here.
+  # If you set any CMAKE_ variables, that can go here.
 # (But usually don't do this, except maybe for C++ standard)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED On)
+set(CMAKE_CXX_EXTENSIONS Off)
 
 # Find packages go here.
 
@@ -49,7 +51,8 @@ add_library(NandTemplates
   stepper.hpp
   wire.hpp
   xnor.hpp
-  xor.hpp )
+  xor.hpp
+  dummy_linker.cpp )
 
 # Link each target with other targets or add options, etc.
 
