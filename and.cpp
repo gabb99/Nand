@@ -16,11 +16,15 @@ namespace
 	class Callback
 	{
 	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
+		Callback() = default;
+		virtual ~Callback() = default;
+
+        auto cb() -> std::function<void(bool)>
+        {
+        	return [&](bool value) { out(value); };
+        }
+
+        virtual void out(bool) = 0;
 	};
 	
 	class MockCallback : public Callback
@@ -84,13 +88,14 @@ TEST(basic, and)
 
 template<typename T> class fixture_and : public ::testing::Test {};
 
-TYPED_TEST_CASE_P(fixture_and);
+TYPED_TEST_SUITE_P(fixture_and);
 TYPED_TEST_P(fixture_and, basic)
 {
 	TypeParam gate;
 	gate.TestBody();
 }
 
-REGISTER_TYPED_TEST_CASE_P(fixture_and, basic);
-typedef ::testing::Types<tf<2>, tf<4>, tf<8>, tf<16>, tf<32>, tf<64>> PowerOf2Tests;
-INSTANTIATE_TYPED_TEST_CASE_P(basic, fixture_and, PowerOf2Tests);
+REGISTER_TYPED_TEST_SUITE_P(fixture_and, basic);
+
+using PowerOf2Tests =  ::testing::Types<tf<2>, tf<4>, tf<8>, tf<16>, tf<32>, tf<64>>;
+INSTANTIATE_TYPED_TEST_SUITE_P(pof2_and, fixture_and, PowerOf2Tests);
