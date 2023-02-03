@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+	    "search.exclude": {
+	      "mos6502": true,
+	      "nand2tetris": true,
+		  "out": true,
+		  "vcpkg": true
+	    }
+	}
+}
