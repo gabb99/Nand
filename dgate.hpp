@@ -10,6 +10,7 @@
 #define dgate_h
 
 #include <bitset>
+#include <cassert>
 
 #include "wire.hpp"
 

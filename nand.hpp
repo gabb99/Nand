@@ -10,6 +10,7 @@
 #define nand_h
 
 #include <bitset>
+#include <cassert>
 
 #include "wire.hpp"
 

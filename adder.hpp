@@ -53,19 +53,19 @@ public:
 	
 	void attach(const std::function<void(bool)>& cb, unsigned n = 0)
 	{
-		m_ands[n].attach(cb);
+        m_adders[n].attach(cb);
 	}
 	
 	void enable(bool value)
 	{
-		for (auto&& n : m_ands)
+		for (auto&& n : m_adders)
 			n.in(value, 1);
 	}
 	
 	void in(const std::bitset<N>& b)
 	{
 		for (unsigned i = 0; i < N; i++)
-			m_ands[i].in(b[i], 0);
+            m_adders[i].in(b[i], 0);
 	}
 	
 	void in(const std::initializer_list<bool>& in)
@@ -73,13 +73,13 @@ public:
 		assert(in.size() == N);
 		
 		for (unsigned i = 0; i < N; i++)
-			m_ands[i].in(in.begin()[i], 0);
+            m_adders[i].in(in.begin()[i], 0);
 	}
 	
 	void in(bool value, unsigned n)
 	{
-		assert(n < m_ands.size());
-		m_ands[n].in(value, 0);
+		assert(n < m_adders.size());
+        m_adders[n].in(value, 0);
 	}
 	
 	std::bitset<N> out() const
@@ -94,7 +94,7 @@ public:
 	
 	bool out(unsigned n) const
 	{
-		return m_ands[n].out();
+		return m_adders[n].out();
 	}
 };
 
