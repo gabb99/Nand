@@ -113,13 +113,13 @@ TEST(basic, enabler)
 
 template<typename T> class fixture_enabler : public ::testing::Test {};
 
-TYPED_TEST_CASE_P(fixture_enabler);
+TYPED_TEST_SUITE_P(fixture_enabler);
 TYPED_TEST_P(fixture_enabler, basic)
 {
 	TypeParam gate;
 	gate.TestBody();
 }
 
-REGISTER_TYPED_TEST_CASE_P(fixture_enabler, basic);
+REGISTER_TYPED_TEST_SUITE_P(fixture_enabler, basic);
 typedef ::testing::Types<tf<2>, tf<4>, tf<8>, tf<16>, tf<32>, tf<64>> PowerOf2Tests;
-INSTANTIATE_TYPED_TEST_CASE_P(basic, fixture_enabler, PowerOf2Tests);
+INSTANTIATE_TYPED_TEST_SUITE_P(basic, fixture_enabler, PowerOf2Tests);

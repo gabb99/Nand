@@ -84,13 +84,13 @@ TEST(basic, xnor)
 
 template<typename T> class fixture_xnor : public ::testing::Test {};
 
-TYPED_TEST_CASE_P(fixture_xnor);
+TYPED_TEST_SUITE_P(fixture_xnor);
 TYPED_TEST_P(fixture_xnor, basic)
 {
 	TypeParam gate;
 	gate.TestBody();
 }
 
-REGISTER_TYPED_TEST_CASE_P(fixture_xnor, basic);
+REGISTER_TYPED_TEST_SUITE_P(fixture_xnor, basic);
 typedef ::testing::Types<tf<2>, tf<4>, tf<8>, tf<16>, tf<32>, tf<64>> PowerOf2Tests;
-INSTANTIATE_TYPED_TEST_CASE_P(basic, fixture_xnor, PowerOf2Tests);
+INSTANTIATE_TYPED_TEST_SUITE_P(basic, fixture_xnor, PowerOf2Tests);

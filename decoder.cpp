@@ -59,4 +59,4 @@ TEST(basic, decoder_2)
 	}
 }
 
-// Cannot use INSTANTIATE_TYPED_TEST_CASE_P, since decoder_t uses constexpr and testing::Types is not constexpr
+// Cannot use INSTANTIATE_TYPED_TEST_SUITE_P, since decoder_t uses constexpr and testing::Types is not constexpr

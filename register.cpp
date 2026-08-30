@@ -133,13 +133,13 @@ TEST(basic, register)
 
 template<typename T> class fixture_register : public ::testing::Test {};
 
-TYPED_TEST_CASE_P(fixture_register);
+TYPED_TEST_SUITE_P(fixture_register);
 TYPED_TEST_P(fixture_register, basic)
 {
 	TypeParam gate;
 	gate.TestBody();
 }
 
-REGISTER_TYPED_TEST_CASE_P(fixture_register, basic);
+REGISTER_TYPED_TEST_SUITE_P(fixture_register, basic);
 typedef ::testing::Types<tf<2>, tf<4>, tf<8>, tf<16>, tf<32>, tf<64>> PowerOf2Tests;
-INSTANTIATE_TYPED_TEST_CASE_P(basic, fixture_register, PowerOf2Tests);
+INSTANTIATE_TYPED_TEST_SUITE_P(basic, fixture_register, PowerOf2Tests);
