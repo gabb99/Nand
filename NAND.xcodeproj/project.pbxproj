@@ -26,6 +26,7 @@
 		827C747221CF0F1B003D9F0B /* nand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827C747121CF0F1B003D9F0B /* nand.cpp */; };
 		827C747321CF0F88003D9F0B /* xor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827C746621CE8E32003D9F0B /* xor.cpp */; };
 		827C747421CF103A003D9F0B /* xnor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827C746C21CE8E94003D9F0B /* xnor.cpp */; };
+		827F8D8F3044572100304B1E /* circuit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827F8D8D3044572100304B1E /* circuit.cpp */; };
 		82AA07A321CC6E910071EF7D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AA07A221CC6E910071EF7D /* main.cpp */; };
 		82AA07CF21CC705B0071EF7D /* gtest-test-part.cc in Sources */ = {isa = PBXBuildFile; fileRef = 82AA07C421CC705B0071EF7D /* gtest-test-part.cc */; };
 		82AA07D021CC705B0071EF7D /* gtest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 82AA07C521CC705B0071EF7D /* gtest.cc */; };
@@ -92,6 +93,9 @@
 		827C746C21CE8E94003D9F0B /* xnor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = xnor.cpp; sourceTree = "<group>"; };
 		827C746D21CE8E94003D9F0B /* xnor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = xnor.hpp; sourceTree = "<group>"; };
 		827C747121CF0F1B003D9F0B /* nand.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = nand.cpp; sourceTree = "<group>"; };
+		827F8D8C3044572100304B1E /* circuit.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = circuit.hpp; sourceTree = "<group>"; };
+		827F8D8D3044572100304B1E /* circuit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = circuit.cpp; sourceTree = "<group>"; };
+		827F8D8E3044572100304B1E /* probe.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = probe.hpp; sourceTree = "<group>"; };
 		82AA07A221CC6E910071EF7D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		82AA07A621CC704C0071EF7D /* gtest-matchers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gtest-matchers.h"; sourceTree = "<group>"; };
 		82AA07A721CC704C0071EF7D /* gtest-death-test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gtest-death-test.h"; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 				82AA07A221CC6E910071EF7D /* main.cpp */,
 				82AA07A421CC70390071EF7D /* gTest */,
 				82D825AB21CC720000695606 /* wire.hpp */,
+				827F8D8E3044572100304B1E /* probe.hpp */,
 				827C747121CF0F1B003D9F0B /* nand.cpp */,
 				82D825AC21CC721100695606 /* nand.hpp */,
 				827C746621CE8E32003D9F0B /* xor.cpp */,
@@ -246,6 +251,8 @@
 		827C746F21CE8E9F003D9F0B /* basic gates */ = {
 			isa = PBXGroup;
 			children = (
+				827F8D8D3044572100304B1E /* circuit.cpp */,
+				827F8D8C3044572100304B1E /* circuit.hpp */,
 				823F1C9321CC9680000A4271 /* not.cpp */,
 				823F1C9221CC964A000A4271 /* not.hpp */,
 				823F1C9821CC9863000A4271 /* or.cpp */,
@@ -480,6 +487,7 @@
 				823F1C9721CC9853000A4271 /* and.cpp in Sources */,
 				82AA07D221CC705B0071EF7D /* gtest-death-test.cc in Sources */,
 				827C747421CF103A003D9F0B /* xnor.cpp in Sources */,
+				827F8D8F3044572100304B1E /* circuit.cpp in Sources */,
 				823F1C9421CC9680000A4271 /* not.cpp in Sources */,
 				82AA07D721CC705B0071EF7D /* gtest-filepath.cc in Sources */,
 				82AA080121CC70950071EF7D /* gmock.cc in Sources */,

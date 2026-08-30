@@ -7,28 +7,14 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "enabler.hpp"
 #include <random>
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
 	
 	template <unsigned N>
 	class tf
@@ -93,21 +79,23 @@ namespace
 
 TEST(basic, enabler)
 {
-	MockCallback cb;
+	probe_t p;
 	enabler_t<> enabler;
-	enabler.attach(cb.cb());
+	enabler.attach(p.cb());
+	p.seed(enabler.out(0));
 	
-	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(1));
-	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(2));
 
 	enabler.in(false, 0);
 	EXPECT_FALSE(enabler.out(0));
+	EXPECT_TRUE(delivered(p, enabler.out(0)));
 
 	enabler.in(true, 0);
 	EXPECT_FALSE(enabler.out(0));
+	EXPECT_TRUE(delivered(p, enabler.out(0)));
 
 	enabler.enable(true);
 	EXPECT_TRUE(enabler.out(0));
+	EXPECT_TRUE(delivered(p, enabler.out(0)));
 }
 
 

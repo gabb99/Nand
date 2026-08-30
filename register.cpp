@@ -7,28 +7,14 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "register.hpp"
 #include <random>
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
 	
 	template <unsigned N>
 	class tf
@@ -104,30 +90,35 @@ namespace
 
 TEST(basic, register)
 {
-	MockCallback cb;
+	probe_t p;
 	registr_t<> registr;
-	registr.attach(cb.cb());
+	registr.attach(p.cb());
+	p.seed(registr.out(0));
 	
-	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(1));
-	EXPECT_CALL(cb, out(false)).Times(testing::AtLeast(2));
 	
 	registr.in(false, 0);
 	EXPECT_FALSE(registr.out(0));
+	EXPECT_TRUE(delivered(p, registr.out(0)));
 	
 	registr.in(true, 0);
 	EXPECT_FALSE(registr.out(0));
+	EXPECT_TRUE(delivered(p, registr.out(0)));
 	
 	registr.set(true);
 	EXPECT_FALSE(registr.out(0));
+	EXPECT_TRUE(delivered(p, registr.out(0)));
 
 	registr.set(false);
 	EXPECT_FALSE(registr.out(0));
+	EXPECT_TRUE(delivered(p, registr.out(0)));
 
 	registr.enable(false);
 	EXPECT_FALSE(registr.out(0));
+	EXPECT_TRUE(delivered(p, registr.out(0)));
 
 	registr.enable(true);
 	EXPECT_TRUE(registr.out(0));
+	EXPECT_TRUE(delivered(p, registr.out(0)));
 }
 
 

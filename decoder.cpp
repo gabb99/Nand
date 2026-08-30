@@ -7,49 +7,32 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "decoder.hpp"
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
-
 	// Feeds every possible word to a decoder_t<N> and checks that exactly the
-	// matching line is high, both by polling out() and by looking at what the
-	// output wires actually delivered.
+	// matching line is high, both by polling out() and by what the output
+	// wires last delivered.
 	template <unsigned N>
 	void exhaustive()
 	{
 		constexpr unsigned SIZE = decoder_t<N>::SIZE;
 
 		decoder_t<N> decoder;
-
-		std::array<bool, SIZE> delivered;
-		std::array<bool, SIZE> driven;
-		delivered.fill(false);
+		std::array<probe_t, SIZE> p;
 
 		for (unsigned i = 0; i < SIZE; i++)
-			decoder.attach([&, i](bool value) { delivered[i] = value; driven[i] = true; }, i);
+		{
+			decoder.attach(p[i].cb(), i);
+			p[i].seed(decoder.out(i));
+		}
 
 		for (unsigned word = 0; word < SIZE; word++)
 		{
-			driven.fill(false);
-
 			decoder.in(std::bitset<N>(word));
 
 			std::bitset<SIZE> expected;
@@ -58,10 +41,8 @@ namespace
 			EXPECT_EQ(decoder.out(), expected) << "word " << word;
 
 			for (unsigned i = 0; i < SIZE; i++)
-			{
-				EXPECT_TRUE(driven[i]) << "line " << i << " never driven for word " << word;
-				EXPECT_EQ(delivered[i], expected.test(i)) << "line " << i << ", word " << word;
-			}
+				EXPECT_TRUE(delivered(p[i], expected.test(i)))
+					<< "line " << i << ", word " << word;
 		}
 	}
 }
@@ -89,19 +70,16 @@ TEST(basic, decoder_zero)
 TEST(basic, decoder_callback)
 {
 	decoder_t<2> decoder;
-	MockCallback cb;
+	probe_t p;
 
-	decoder.attach(cb.cb(), 1);
-
-	// Every input write re-drives every gate, so the count of calls is an
-	// artifact of the propagation order. What matters is that the line is
-	// driven, and that it settles high for its own word.
-	EXPECT_CALL(cb, out(false)).Times(testing::AnyNumber());
-	EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(1));
+	decoder.attach(p.cb(), 1);
+	p.seed(decoder.out(1));
 
 	decoder.in(std::bitset<2>(1));
 	EXPECT_TRUE(decoder.out(1));
+	EXPECT_TRUE(delivered(p, decoder.out(1)));
 
 	decoder.in(std::bitset<2>(2));
 	EXPECT_FALSE(decoder.out(1));
+	EXPECT_TRUE(delivered(p, decoder.out(1)));
 }

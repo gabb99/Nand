@@ -1,3 +1,11 @@
+#
+#  CMakeLists.txt
+#  NAND
+#
+#  Created by Claude Opus 5 on 2026-08-29.
+#  Copyright © 2026 Gabriel Beauchemin. All rights reserved.
+#
+
 cmake_minimum_required(VERSION 3.16)
 
 project(NAND
@@ -47,6 +55,7 @@ add_subdirectory(gtest EXCLUDE_FROM_ALL)
 
 add_executable(nand_tests
 	main.cpp
+	circuit.cpp
 	nand.cpp
 	not.cpp
 	and.cpp
