@@ -29,6 +29,7 @@
 		827F8D8F3044572100304B1E /* circuit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827F8D8D3044572100304B1E /* circuit.cpp */; };
 		827F8D9230445A3E00304B1E /* gmock-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 827F8D9030445A3E00304B1E /* gmock-all.cc */; };
 		827F8D9330445A3E00304B1E /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 827F8D9130445A3E00304B1E /* gtest-all.cc */; };
+		827F8D9530445BF500304B1E /* wire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827F8D9430445BF500304B1E /* wire.cpp */; };
 		82AA07A321CC6E910071EF7D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AA07A221CC6E910071EF7D /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		827F8D8E3044572100304B1E /* probe.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = probe.hpp; sourceTree = "<group>"; };
 		827F8D9030445A3E00304B1E /* gmock-all.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "gmock-all.cc"; path = "gtest/googlemock/src/gmock-all.cc"; sourceTree = "<group>"; };
 		827F8D9130445A3E00304B1E /* gtest-all.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "gtest/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
+		827F8D9430445BF500304B1E /* wire.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wire.cpp; sourceTree = "<group>"; };
 		82AA07A221CC6E910071EF7D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		82D825AB21CC720000695606 /* wire.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = wire.hpp; sourceTree = "<group>"; };
 		82D825AC21CC721100695606 /* nand.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = nand.hpp; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				8278C5C721CFE5DF0066733B /* cpu blocks */,
 				82AA07A221CC6E910071EF7D /* main.cpp */,
 				82AA07A421CC70390071EF7D /* gTest */,
+				827F8D9430445BF500304B1E /* wire.cpp */,
 				82D825AB21CC720000695606 /* wire.hpp */,
 				827F8D8E3044572100304B1E /* probe.hpp */,
 				827C747121CF0F1B003D9F0B /* nand.cpp */,
@@ -262,6 +265,7 @@
 				827F8D9330445A3E00304B1E /* gtest-all.cc in Sources */,
 				8278C5C321CFE5720066733B /* decoder.cpp in Sources */,
 				8278C5CA21CFE5F80066733B /* alu.cpp in Sources */,
+				827F8D9530445BF500304B1E /* wire.cpp in Sources */,
 				8278C5CD21CFE6080066733B /* control.cpp in Sources */,
 				8278C5D821D11EE00066733B /* dgate.cpp in Sources */,
 				827C747021CEB9DB003D9F0B /* nor.cpp in Sources */,

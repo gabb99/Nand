@@ -55,6 +55,7 @@ add_subdirectory(gtest EXCLUDE_FROM_ALL)
 
 add_executable(nand_tests
 	main.cpp
+	wire.cpp
 	circuit.cpp
 	nand.cpp
 	not.cpp
