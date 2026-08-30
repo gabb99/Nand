@@ -9,26 +9,69 @@
 #ifndef dgate_h
 #define dgate_h
 
-#include <cassert>
+#include <array>
 #include <bitset>
+#include <cassert>
 
+#include "circuit.hpp"
 #include "wire.hpp"
 
+// N gated D latches sharing one enable line, built from NAND gates.
+//
+// Transparent while set is high - Q follows D - and holding the last value
+// seen when it goes low. Four NANDs per bit, cross-coupled, the standard
+// arrangement; see dlatch() in circuit.hpp.
+//
+// This used to be a plain std::array<bool> with a note saying feedback could
+// not work in discrete mode. Feedback is not the obstacle. The obstacle was
+// that wire_t assigns a gate input and evaluates the gate in the same call,
+// so a signal fanning out to k inputs is applied one input at a time and the
+// circuit passes through states that never exist in hardware. Combinational
+// logic settles on the right answer anyway; a latch captures the transient
+// and keeps it, which is why a D latch could not hold a bit.
+//
+// The latches therefore live in a circuit_t, where assignment and evaluation
+// are separate: every write lands before anything is evaluated, so fan-out is
+// atomic, and nothing reaches the output wires until the netlist has settled,
+// so no glitch escapes the boundary.
 template <unsigned N = 1>
 class dgate_t
 {
-	// Usually expressed using nand gates, but because of the feedback
-	// cannot be made to work in a discrete mode.
-	// For simplicity's sake, make this a basic gate
+	circuit_t                      m_circuit;
+	circuit_t::node                m_set;
+	std::array<circuit_t::node, N> m_d;
+	std::array<circuit_t::node, N> m_q;
+	wire_t<N>                      m_output;
 
-	std::array<bool, N> m_inputs;
-	std::array<bool, N> m_gated_inputs;
-	bool m_set = false;
-	wire_t<N> m_output;
-	
+	void settle()
+	{
+		const unsigned sweeps = m_circuit.settle();
+		assert(sweeps != 0 && "latches failed to settle");
+		(void)sweeps;
+	}
+
+	void settle_and_drive()
+	{
+		settle();
+
+		for (unsigned i = 0; i < N; i++)
+			m_output.in(m_circuit.get(m_q[i]), i);
+	}
+
 public:
-	dgate_t() { m_inputs.fill(false); m_gated_inputs.fill(false); }
-	
+	dgate_t()
+	{
+		m_set = m_circuit.input(false);
+
+		for (unsigned i = 0; i < N; i++)
+		{
+			m_d[i] = m_circuit.input(false);
+			m_q[i] = dlatch(m_circuit, m_d[i], m_set);
+		}
+
+		settle();
+	}
+
 	void attach(const std::function<void(bool)>& cb, unsigned w = 0)
 	{
 		m_output.attach(cb, w);
@@ -36,63 +79,54 @@ public:
 
 	void set(bool value)
 	{
-		m_set = value;
-		if (value)
-		{
-			m_gated_inputs = m_inputs;
-
-			for (unsigned i = 0; i < N; i++)
-				m_output.in(out(i), i);
-		}
+		m_circuit.set(m_set, value);
+		settle_and_drive();
 	}
 
 	void in(const std::bitset<N>& b)
 	{
 		for (unsigned i = 0; i < N; i++)
-		{
-			m_inputs[i] = b.test(i);
-			if (m_set) m_gated_inputs[i] = m_inputs[i];
-			m_output.in(out(i), i);
-		}
+			m_circuit.set(m_d[i], b.test(i));
+
+		settle_and_drive();
 	}
-	
+
 	void in(const std::initializer_list<bool>& in)
 	{
 		assert(in.size() == N);
-		
-		for (unsigned i = 0; i < in.size(); i++)
-		{
-			m_inputs[i] = in.begin()[i];
-			if (m_set) m_gated_inputs[i] = m_inputs[i];
-			m_output.in(out(), i);
-		}
+
+		for (unsigned i = 0; i < N; i++)
+			m_circuit.set(m_d[i], in.begin()[i]);
+
+		settle_and_drive();
 	}
-	
+
 	void in(bool value, unsigned n)
 	{
-		assert(n < m_inputs.size());
-		m_inputs[n] = value;
-		if (m_set) m_gated_inputs[n] = m_inputs[n];
-		m_output.in(out(n), n);
+		assert(n < N);
+
+		m_circuit.set(m_d[n], value);
+		settle_and_drive();
 	}
 
 	std::bitset<N> out() const
 	{
-		std::bitset<N> n;
+		std::bitset<N> b;
 
 		for (unsigned i = 0; i < N; i++)
-			n.set(i, out(i));
+			b.set(i, out(i));
 
-		return n;
+		return b;
 	}
 
 	bool out(unsigned n) const
 	{
-		if (m_set == false)
-			return m_gated_inputs[n];
-
-		return m_inputs[n];
+		assert(n < N);
+		return m_circuit.get(m_q[n]);
 	}
+
+	// How many NAND gates this costs, for the tests that care.
+	std::size_t gates() const { return m_circuit.gates(); }
 };
 
 #endif /* dgate_h */
