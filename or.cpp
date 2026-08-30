@@ -7,57 +7,46 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "or.hpp"
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
 	
 	template <unsigned N>
 	class tf
 	{
-		MockCallback cb;
+		probe_t p;
 		or_t<N> or_;
 		std::bitset<N> b;
 		
 	public:
 		void TestBody()
 		{
-			or_.attach(cb.cb());
+			or_.attach(p.cb());
+			p.seed(or_.out());
 			
-			EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(N));
-			EXPECT_CALL(cb, out(false)).Times(testing::AtLeast(1));
 			
 			or_.in(b); // Test all zeros
 			EXPECT_FALSE(or_.out());
+			EXPECT_TRUE(delivered(p, or_.out()));
 			
 			for (auto i = 0; i < N; i++)
 			{
 				or_.in(true, i);
 				EXPECT_TRUE(or_.out());
+				EXPECT_TRUE(delivered(p, or_.out()));
 				or_.in(false, i);
 				EXPECT_FALSE(or_.out());
+				EXPECT_TRUE(delivered(p, or_.out()));
 			}
 			
 			b.flip();
 			or_.in(b); // Test all ones
 			EXPECT_TRUE(or_.out());
+			EXPECT_TRUE(delivered(p, or_.out()));
 		}
 	};
 }

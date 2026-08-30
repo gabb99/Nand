@@ -7,57 +7,46 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "xnor.hpp"
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
 	
 	template <unsigned N>
 	class tf
 	{
-		MockCallback cb;
+		probe_t p;
 		xnor_t<N> xnor_;
 		std::bitset<N> b;
 		
 	public:
 		void TestBody()
 		{
-			xnor_.attach(cb.cb());
+			xnor_.attach(p.cb());
+			p.seed(xnor_.out());
 			
-			EXPECT_CALL(cb, out(false)).Times(testing::AtLeast(N));
-			EXPECT_CALL(cb, out(true)).Times(testing::Exactly(N + 2));
 			
 			xnor_.in(b); // Test all zeros
 			EXPECT_TRUE(xnor_.out());
+			EXPECT_TRUE(delivered(p, xnor_.out()));
 			
 			for (auto i = 0; i < N; i++)
 			{
 				xnor_.in(true, i);
 				EXPECT_FALSE(xnor_.out());
+				EXPECT_TRUE(delivered(p, xnor_.out()));
 				xnor_.in(false, i);
 				EXPECT_TRUE(xnor_.out());
+				EXPECT_TRUE(delivered(p, xnor_.out()));
 			}
 			
 			b.flip();
 			xnor_.in(b); // Test all ones
 			EXPECT_TRUE(xnor_.out());
+			EXPECT_TRUE(delivered(p, xnor_.out()));
 		}
 	};
 }

@@ -9,28 +9,12 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
+#include "probe.hpp"
+
 #include "wire.hpp"
 #include "clock.hpp"
 #include "dgate.hpp"
 
-namespace
-{
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
-}
 
 int main(int argc, const char * argv[])
 {
@@ -41,34 +25,57 @@ int main(int argc, const char * argv[])
 
 TEST(basic, wire)
 {
-	MockCallback cb;
+	probe_t p;
 	wire_t<> wire;
-	wire.attach(cb.cb());
-	
-	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(1));
-	wire.in(true);
+	wire.attach(p.cb());
 
-	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(1));
+	// A wire is pure fan-out: every in() is delivered once to each callback
+	// attached to that line. Here the count IS the contract, not a by-product
+	// of how far a change propagated, so counting it is fair game.
+	wire.in(true);
+	EXPECT_EQ(p.calls(), 1u);
+	EXPECT_TRUE(delivered(p, true));
+
 	wire.in(false);
+	EXPECT_EQ(p.calls(), 2u);
+	EXPECT_TRUE(delivered(p, false));
 }
 
 TEST(basic, wire_n)
 {
-	MockCallback cb;
+	probe_t p;
 	wire_t<4> wire;
 
-	for (auto i = 0; i < wire.size(); i++)
-		wire.attach(cb.cb(), i);
-	
-	EXPECT_CALL(cb, out(true)).Times(testing::Exactly(2));
+	for (unsigned i = 0; i < wire.size(); i++)
+		wire.attach(p.cb(), i);
+
 	wire.in(true, 0);
 	wire.in(true, 2);
+	EXPECT_EQ(p.calls(), 2u);
+	EXPECT_TRUE(delivered(p, true));
 
-	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(2));
 	wire.in(false, 1);
 	wire.in(false, 3);
+	EXPECT_EQ(p.calls(), 4u);
+	EXPECT_TRUE(delivered(p, false));
 }
 
+// Each line of a wire_t<N> is independent: driving one must not disturb another.
+TEST(basic, wire_lines_are_independent)
+{
+	std::array<probe_t, 4> p;
+	wire_t<4> wire;
+
+	for (unsigned i = 0; i < wire.size(); i++)
+		wire.attach(p[i].cb(), i);
+
+	wire.in(true, 2);
+
+	EXPECT_FALSE(p[0].driven());
+	EXPECT_FALSE(p[1].driven());
+	EXPECT_TRUE(delivered(p[2], true));
+	EXPECT_FALSE(p[3].driven());
+}
 
 TEST(basic, clock)
 {

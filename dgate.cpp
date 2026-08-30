@@ -7,28 +7,14 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "dgate.hpp"
 #include <random>
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
 	
 	template <unsigned N>
 	class tf
@@ -105,44 +91,51 @@ namespace
 
 TEST(basic, dgate)
 {
-	MockCallback cb;
+	probe_t p;
 	dgate_t<> dgate;
-	dgate.attach(cb.cb());
+	dgate.attach(p.cb());
+	p.seed(dgate.out(0));
 
-	EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(2));
-	EXPECT_CALL(cb, out(false)).Times(testing::AtLeast(4));
 
 	// pass through, when not set
 	{
 		dgate.in(false, 0);
 		EXPECT_FALSE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 		
 		dgate.in(true, 0);
 		EXPECT_FALSE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 	}
 
 	// Remember true
 	{
 		dgate.set(true);
 		EXPECT_TRUE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 
 		dgate.set(false);
 		EXPECT_TRUE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 
 		dgate.in(true, 0);
 		EXPECT_TRUE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 
 		dgate.in(false, 0);
 		EXPECT_TRUE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 	}
 
 	// Remember false
 	{
 		dgate.set(true);
 		EXPECT_FALSE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 		
 		dgate.set(false);
 		EXPECT_FALSE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 		
 		dgate.in(true, 0);
 		
@@ -150,6 +143,7 @@ TEST(basic, dgate)
 		
 		dgate.in(false, 0);
 		EXPECT_FALSE(dgate.out(0));
+		EXPECT_TRUE(delivered(p, dgate.out(0)));
 	}
 }
 

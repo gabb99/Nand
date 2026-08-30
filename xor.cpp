@@ -7,57 +7,46 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "xor.hpp"
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
 	
 	template <unsigned N>
 	class tf
 	{
-		MockCallback cb;
+		probe_t p;
 		xor_t<N> xor_;
 		std::bitset<N> b;
 		
 	public:
 		void TestBody()
 		{
-			xor_.attach(cb.cb());
+			xor_.attach(p.cb());
+			p.seed(xor_.out());
 			
-			EXPECT_CALL(cb, out(false)).Times(testing::AtLeast(N));
-			EXPECT_CALL(cb, out(true)).Times(testing::Exactly(N));
 			
 			xor_.in(b); // Test all zeros
 			EXPECT_FALSE(xor_.out());
+			EXPECT_TRUE(delivered(p, xor_.out()));
 			
 			for (auto i = 0; i < N; i++)
 			{
 				xor_.in(true, i);
 				EXPECT_TRUE(xor_.out());
+				EXPECT_TRUE(delivered(p, xor_.out()));
 				xor_.in(false, i);
 				EXPECT_FALSE(xor_.out());
+				EXPECT_TRUE(delivered(p, xor_.out()));
 			}
 			
 			b.flip();
 			xor_.in(b); // Test all ones
 			EXPECT_FALSE(xor_.out());
+			EXPECT_TRUE(delivered(p, xor_.out()));
 		}
 	};
 }

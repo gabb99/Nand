@@ -7,57 +7,46 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "nand.hpp"
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
 	
 	template <unsigned N>
 	class tf
 	{
-		MockCallback cb;
+		probe_t p;
 		nand_t<N> nand;
 		std::bitset<N> b;
 		
 	public:
 		void TestBody()
 		{
-			nand.attach(cb.cb());
+			nand.attach(p.cb());
+			p.seed(nand.out());
 			
-			EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(N));
-			EXPECT_CALL(cb, out(false)).Times(testing::Exactly(1));
 			
 			nand.in(b); // Test all zeros
 			EXPECT_TRUE(nand.out());
+			EXPECT_TRUE(delivered(p, nand.out()));
 			
 			for (auto i = 0; i < N; i++)
 			{
 				nand.in(true, i);
 				EXPECT_TRUE(nand.out());
+				EXPECT_TRUE(delivered(p, nand.out()));
 				nand.in(false, i);
 				EXPECT_TRUE(nand.out());
+				EXPECT_TRUE(delivered(p, nand.out()));
 			}
 			
 			b.flip();
 			nand.in(b); // Test all ones
 			EXPECT_FALSE(nand.out());
+			EXPECT_TRUE(delivered(p, nand.out()));
 		}
 	};
 }
@@ -65,25 +54,28 @@ namespace
 
 TEST(basic, nand)
 {
-	MockCallback cb;
+	probe_t p;
 	nand_t<> nand;
-	nand.attach(cb.cb());
+	nand.attach(p.cb());
+	p.seed(nand.out());
 	
-	EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(3));
-	EXPECT_CALL(cb, out(false)).Times(testing::Exactly(1));
 	
 	nand.in(false, 0);
 	nand.in(false, 1);
 	EXPECT_TRUE(nand.out());
+	EXPECT_TRUE(delivered(p, nand.out()));
 	
 	nand.in({true, false});
 	EXPECT_TRUE(nand.out());
+	EXPECT_TRUE(delivered(p, nand.out()));
 	
 	nand.in(std::bitset<2>("10"));
 	EXPECT_TRUE(nand.out());
+	EXPECT_TRUE(delivered(p, nand.out()));
 	
 	nand.in({true, true});
 	EXPECT_FALSE(nand.out());
+	EXPECT_TRUE(delivered(p, nand.out()));
 }
 
 

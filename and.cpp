@@ -7,57 +7,46 @@
 //
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+
+#include "probe.hpp"
 
 #include "and.hpp"
 
 namespace
 {
-	class Callback
-	{
-	public:
-		Callback() {}
-		virtual ~Callback() {}
-		
-		std::function<void(bool)> cb() { return [&](bool value) { out(value); }; }
-		virtual void out(bool) {}
-	};
-	
-	class MockCallback : public Callback
-	{
-	public:
-		MOCK_METHOD1(out, void(bool));
-	};
 	
 	template <unsigned N>
 	class tf
 	{
-		MockCallback cb;
+		probe_t p;
 		and_t<N> and_;
 		std::bitset<N> b;
 		
 	public:
 		void TestBody()
 		{
-			and_.attach(cb.cb());
+			and_.attach(p.cb());
+			p.seed(and_.out());
 			
-			EXPECT_CALL(cb, out(false)).Times(testing::AtLeast(N));
-			EXPECT_CALL(cb, out(true)).Times(testing::Exactly(1));
 			
 			and_.in(b); // Test all zeros
 			EXPECT_FALSE(and_.out());
+			EXPECT_TRUE(delivered(p, and_.out()));
 			
 			for (auto i = 0; i < N; i++)
 			{
 				and_.in(true, i);
 				EXPECT_FALSE(and_.out());
+				EXPECT_TRUE(delivered(p, and_.out()));
 				and_.in(false, i);
 				EXPECT_FALSE(and_.out());
+				EXPECT_TRUE(delivered(p, and_.out()));
 			}
 			
 			b.flip();
 			and_.in(b); // Test all ones
 			EXPECT_TRUE(and_.out());
+			EXPECT_TRUE(delivered(p, and_.out()));
 		}
 	};
 }
