@@ -57,6 +57,7 @@ add_executable(nand_tests
 	main.cpp
 	wire.cpp
 	circuit.cpp
+	clock.cpp
 	nand.cpp
 	not.cpp
 	and.cpp
