@@ -9,8 +9,8 @@
 #ifndef nand_h
 #define nand_h
 
-#include <bitset>
 #include <cassert>
+#include <bitset>
 
 #include "wire.hpp"
 

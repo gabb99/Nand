@@ -9,6 +9,8 @@
 #ifndef enabler_hpp
 #define enabler_hpp
 
+#include <cassert>
+
 #include "and.hpp"
 
 template <unsigned N = 1>

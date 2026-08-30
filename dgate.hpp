@@ -9,8 +9,8 @@
 #ifndef dgate_h
 #define dgate_h
 
-#include <bitset>
 #include <cassert>
+#include <bitset>
 
 #include "wire.hpp"
 
