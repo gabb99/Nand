@@ -28,35 +28,80 @@ namespace
 	public:
 		MOCK_METHOD1(out, void(bool));
 	};
+
+	// Feeds every possible word to a decoder_t<N> and checks that exactly the
+	// matching line is high, both by polling out() and by looking at what the
+	// output wires actually delivered.
+	template <unsigned N>
+	void exhaustive()
+	{
+		constexpr unsigned SIZE = decoder_t<N>::SIZE;
+
+		decoder_t<N> decoder;
+
+		std::array<bool, SIZE> delivered;
+		std::array<bool, SIZE> driven;
+		delivered.fill(false);
+
+		for (unsigned i = 0; i < SIZE; i++)
+			decoder.attach([&, i](bool value) { delivered[i] = value; driven[i] = true; }, i);
+
+		for (unsigned word = 0; word < SIZE; word++)
+		{
+			driven.fill(false);
+
+			decoder.in(std::bitset<N>(word));
+
+			std::bitset<SIZE> expected;
+			expected.set(word);
+
+			EXPECT_EQ(decoder.out(), expected) << "word " << word;
+
+			for (unsigned i = 0; i < SIZE; i++)
+			{
+				EXPECT_TRUE(driven[i]) << "line " << i << " never driven for word " << word;
+				EXPECT_EQ(delivered[i], expected.test(i)) << "line " << i << ", word " << word;
+			}
+		}
+	}
 }
 
 
-TEST(basic, decoder_2)
+TEST(basic, decoder_1) { exhaustive<1>(); }
+TEST(basic, decoder_2) { exhaustive<2>(); }
+TEST(basic, decoder_3) { exhaustive<3>(); }
+TEST(basic, decoder_4) { exhaustive<4>(); }
+
+
+TEST(basic, decoder_zero)
+{
+	// All zeros selects line 0, and the constructor settles the gates so that
+	// this holds before anything is fed in.
+	decoder_t<3> decoder;
+
+	std::bitset<decoder_t<3>::SIZE> expected;
+	expected.set(0);
+
+	EXPECT_EQ(decoder.out(), expected);
+}
+
+
+TEST(basic, decoder_callback)
 {
 	decoder_t<2> decoder;
-	std::array<MockCallback, decoder.SIZE> cb;
+	MockCallback cb;
 
-	for (unsigned i = 0; i < cb.size(); i++)
-	{
-		decoder.attach(cb[i].cb(), i);
-		EXPECT_CALL(cb[i], out(true)).Times(testing::Exactly(1));
-		EXPECT_CALL(cb[i], out(false)).Times(testing::Exactly(cb.size() - 1));
-	}
+	decoder.attach(cb.cb(), 1);
 
-	std::bitset<decoder.SIZE> res("1");
-	for (unsigned i = 0; i < cb.size(); i++)
-	{
-		switch (i)
-		{
-			case 0: decoder.in(false, 0); decoder.in(false, 1); break;
-			case 1: decoder.in({false, true}); break;
-			case 2: decoder.in({true, false}); break;
-			case 3: decoder.in(true, 0); decoder.in(true, 1); break;
-		}
+	// Every input write re-drives every gate, so the count of calls is an
+	// artifact of the propagation order. What matters is that the line is
+	// driven, and that it settles high for its own word.
+	EXPECT_CALL(cb, out(false)).Times(testing::AnyNumber());
+	EXPECT_CALL(cb, out(true)).Times(testing::AtLeast(1));
 
-		EXPECT_EQ(decoder.out(), res);
-		res <<= 1;
-	}
+	decoder.in(std::bitset<2>(1));
+	EXPECT_TRUE(decoder.out(1));
+
+	decoder.in(std::bitset<2>(2));
+	EXPECT_FALSE(decoder.out(1));
 }
-
-// Cannot use INSTANTIATE_TYPED_TEST_SUITE_P, since decoder_t uses constexpr and testing::Types is not constexpr
